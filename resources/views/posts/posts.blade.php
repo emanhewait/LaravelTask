@@ -41,28 +41,30 @@
                                 class="card-img-top"
                                 style="width: auto; height: 200px;"
                                 alt="Post Image">
-                            @else
-                                No Image Available
                             @endif
                             <div class="card-body">
+                                <p class="card-text">
+                                    Created by: {{ $post->user->name }}
+                                </p>
                                 <h5 class="card-title">
                                     Title: {{ $post->title }}
                                 </h5>
                                 <p class="card-text">
                                     {{ $post->description }}
                                 </p>
-                                <p class="card-text">
-                                    Created by: {{ $post->user->name }}
-                                </p>
-                                <form action="{{ route('posts.destroy', $post) }}"
-                                method="POST">
-                                    @method('DELETE')
-                                    @csrf
-                                    <button type="submit"
-                                    class="btn btn-danger me-2">
-                                    Delete
-                                    </button>
-                                </form>
+                                @auth
+                                    @if($post->user_id ==  auth()->user()->id)
+                                        <form action="{{ route('posts.destroy', $post) }}"
+                                        method="POST">
+                                            @method('DELETE')
+                                            @csrf
+                                            <button type="submit"
+                                            class="btn btn-danger me-2">
+                                            Delete
+                                            </button>
+                                        </form>
+                                    @endif
+                                @endauth
                             </div>
                         </div>
                     </div>
